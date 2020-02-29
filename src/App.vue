@@ -8,4 +8,7 @@
 #app{
   height: 100%;
 }
+    .ivu-rate-star{
+        margin: 0px!important;
+    }
 </style>

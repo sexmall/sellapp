@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="merchant-div">
+  <div class="merchant-div">
+    <ul class="content">
       <div class="grade">
         <h3>{{list.name}}</h3>
         <p>
@@ -93,12 +93,13 @@
         <p>{{list.infos ? list.infos[2] : ''}}</p>
         <p>{{list.infos ? list.infos[3] : ''}}</p>
       </div>
-    </div>
+    </ul>
   </div>
 </template>
 
 <script>
 import { getSeller } from "../api/apis.js";
+import BScroll from "better-scroll";
 export default {
   data() {
     return {
@@ -110,6 +111,9 @@ export default {
       this.list = res.data.data;
       // console.log(res.data.data)
     });
+  },
+  mounted() {
+    new BScroll(document.querySelector(".evaluate-div"));
   }
 };
 </script>
@@ -118,7 +122,7 @@ export default {
 .merchant-div {
   background-color: #ccc;
   height: 70vh;
-  padding-bottom:30px;
+  padding-bottom: 30px;
   overflow: scroll;
   .grade {
     background-color: #fff;
@@ -183,5 +187,4 @@ export default {
     }
   }
 }
-
 </style>
