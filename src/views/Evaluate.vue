@@ -19,7 +19,7 @@
             <Rate disabled v-model="valueDisabled" />
             <span style="color:#f5a623">4</span>
           </p>
-          <p>送达时间：{{ratingsList[0].deliveryTime}}分钟</p>
+          <p>送达时间：47分钟</p>
         </div>
       </div>
       <!-- 背景 -->

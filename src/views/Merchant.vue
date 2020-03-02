@@ -113,7 +113,7 @@ export default {
     });
   },
   mounted() {
-    new BScroll(document.querySelector(".evaluate-div"));
+    new BScroll(document.querySelector(".merchant-div"));
   }
 };
 </script>

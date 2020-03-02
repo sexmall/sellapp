@@ -4,7 +4,7 @@
     <div>
       <!-- 头部 -->
       <div class="bgheader" :style="{backgroundImage:'url('+list.avatar +')'}">
-        <div class="header" style="height: 100px">
+        <div class="header">
           <img :src="list.avatar" alt class="merchantImg" />
           <div class="msg-div">
             <p class="msg-p1">
@@ -45,18 +45,27 @@
     <div class="box">
       <!-- 路由出口 -->
       <div class="box2">
-          <router-view />
+        <router-view />
       </div>
-      <!-- 购物车 -->
-      <div class="shopcar" style="height: 60px">
+
+      <!-- 购物车板子 -->
+      <div id="filter" v-show="showbar">
+        <transition name="slide-fade">
+          <div class="shopcar-box" v-show="showbar">
+            <shopCar></shopCar>
+          </div>
+        </transition>
+      </div>
+      <!-- 购物车条子 -->
+      <div class="shopcar" style="height: 60px" @click="showbar = !showbar">
         <Row>
           <i-col span="6">
             <div class="img-div">
-              <img src="../assets/imgs/shopping_cart.png" alt />
+              <img src="../assets/imgs/shopcar.png" alt />
             </div>
           </i-col>
           <i-col span="2">
-            <p>￥0</p>
+            <p>￥{{Total}}</p>
           </i-col>
           <i-col span="10">
             <p>另需配送费￥{{list.deliveryPrice}}</p>
@@ -72,17 +81,36 @@
 
 <script>
 import { getSeller } from "../api/apis.js";
+import shopCar from "../views/Shopcare.vue";
 export default {
   data() {
     return {
-      list: {}
+      list: {},
+      showbar: false
     };
+  },
+  // 引入购物车组件
+  components: {
+    shopCar: shopCar,
   },
   created() {
     getSeller().then(res => {
       this.list = res.data.data;
       // console.log(res.data.data)
     });
+  },
+  computed:{
+    goodsTotal(){
+      return this.$store.getters.getGoods;
+    },
+    // 总价格
+    Total(){
+      var sum = 0;
+      for(let obj of this.$store.getters.getGoods){
+        sum+=obj.num*obj.price
+      }
+      return sum
+    }
   }
 };
 </script>
@@ -94,7 +122,7 @@ export default {
 }
 .main-div {
   height: 100%;
-//   display: flex;
+  //   display: flex;
   .bgheader {
     height: 130px;
     img {
@@ -196,4 +224,37 @@ export default {
   }
 }
 
+// 购物车板子
+#filter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color:rgba(255,255,255,0.6)
+  // opacity: 0.3;
+}
+.shopcar-box {
+  position: fixed;
+  width: 100%;
+  min-height: 0;
+  bottom: 60px;
+  background-color: #fff;
+  opacity: 1!important;
+}
+
+
+/* 可以设置不同的进入和离开动画 */
+/* 设置持续时间和动画函数 */
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.8s ease;
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active for below version 2.1.8 */ {
+  transform: translateY(200px);
+  opacity: 0;
+}
 </style>
